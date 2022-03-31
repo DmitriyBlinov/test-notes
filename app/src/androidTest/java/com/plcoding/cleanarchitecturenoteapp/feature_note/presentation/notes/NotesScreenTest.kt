@@ -1,11 +1,15 @@
 package com.plcoding.cleanarchitecturenoteapp.feature_note.presentation.notes
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.plcoding.cleanarchitecturenoteapp.core.util.TestTags
 import com.plcoding.cleanarchitecturenoteapp.di.AppModule
 import com.plcoding.cleanarchitecturenoteapp.feature_note.presentation.MainActivity
 import com.plcoding.cleanarchitecturenoteapp.feature_note.presentation.util.Screen
@@ -13,7 +17,6 @@ import com.plcoding.cleanarchitecturenoteapp.ui.theme.CleanArchitectureNoteAppTh
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -27,8 +30,8 @@ class NotesScreenTest {
     
     @get:Rule(order = 1)
     val composeRule = createAndroidComposeRule<MainActivity>()
-    
-    @OptIn(ExperimentalAnimationApi::class)
+
+    @ExperimentalAnimationApi
     @Before
     fun setUp() {
         hiltRule.inject()
@@ -49,6 +52,8 @@ class NotesScreenTest {
 
     @Test
     fun clickToggleOrderSection_isVisible() {
-
+        composeRule.onNodeWithTag(TestTags.ORDER_SECTION).assertDoesNotExist()
+        composeRule.onNodeWithContentDescription("Sort").performClick()
+        composeRule.onNodeWithTag(TestTags.ORDER_SECTION).assertIsDisplayed()
     }
 }
